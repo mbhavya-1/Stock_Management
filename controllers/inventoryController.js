@@ -1,12 +1,10 @@
 const Inventory = require("../models/Inventory");
 const Log = require("../models/Log");
 
-// ── Helper: save a log entry ──────────────────────────────────────
 async function pushLog(data) {
     await Log.create(data);
 }
 
-// ── GET /api/items ────────────────────────────────────────────────
 exports.getAllItems = async (req, res) => {
     try {
         const items = await Inventory.find().sort({ last_updated: -1 });
@@ -16,7 +14,6 @@ exports.getAllItems = async (req, res) => {
     }
 };
 
-// ── POST /api/items ───────────────────────────────────────────────
 exports.createItem = async (req, res) => {
     const { item_name, category, quantity_in_stock, reorder_level, supplier } = req.body;
 
@@ -50,7 +47,6 @@ exports.createItem = async (req, res) => {
     }
 };
 
-// ── PUT /api/items/:id ────────────────────────────────────────────
 exports.updateItem = async (req, res) => {
     const { id } = req.params;
     const { quantity_in_stock, reorder_level } = req.body;
@@ -97,7 +93,6 @@ exports.updateItem = async (req, res) => {
     }
 };
 
-// ── DELETE /api/items/:id ─────────────────────────────────────────
 exports.deleteItem = async (req, res) => {
     const { id } = req.params;
 

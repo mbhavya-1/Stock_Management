@@ -2,18 +2,17 @@ const API_URL = "https://stock-management-1-vv3s.onrender.com/api/items";
 const LOGS_URL = "https://stock-management-1-vv3s.onrender.com/api/logs";
 
 let allItems = [];
-let allLogs = [];   // cached logs for client-side search
+let allLogs = [];
 let currentEditId = null;
-let currentView = "inventory"; // "inventory" | "logs"
+let currentView = "inventory";
 
-// ── Fetch & Refresh ────────────────────────────────────────────────
 async function fetchItems() {
     const res = await fetch(API_URL);
     allItems = await res.json();
     renderTable(allItems);
 }
 
-// Called after every add or update — refreshes everything instantly
+
 async function refreshAll() {
     await fetchItems();
     if (document.getElementById("alertBox").classList.contains("alert-panel-open")) {
@@ -24,7 +23,6 @@ async function refreshAll() {
     }
 }
 
-// ── Render Inventory Table ────────────────────────────────────────
 function renderTable(items) {
     const body = document.getElementById("inventoryBody");
     body.innerHTML = "";
@@ -65,14 +63,13 @@ function renderTable(items) {
     document.getElementById("outStock").innerText = out;
 }
 
-// ── Delete ────────────────────────────────────────────────────────
+
 async function deleteItem(id) {
     if (!confirm("Delete this item?")) return;
     await fetch(`${API_URL}/${id}`, { method: "DELETE" });
     await refreshAll();
 }
 
-// ── Add Modal ─────────────────────────────────────────────────────
 function openAddModal() {
     document.getElementById("addName").value = "";
     document.getElementById("addCategory").value = "";
@@ -115,7 +112,7 @@ async function addItem() {
     await refreshAll();
 }
 
-// ── Update Modal ──────────────────────────────────────────────────
+
 function openUpdateModal(id) {
     const item = allItems.find(i => i.id === id);
     if (!item) return;
@@ -163,7 +160,6 @@ async function submitUpdate() {
     await refreshAll();
 }
 
-// ── Alerts Panel ──────────────────────────────────────────────────
 function toggleAlerts() {
     const panel = document.getElementById("alertBox");
     if (panel.classList.contains("alert-panel-open")) {
@@ -201,14 +197,13 @@ function renderAlerts() {
     }).join("");
 }
 
-// ── View Toggle (Inventory <-> Logs) ─────────────────────────────
 async function toggleView() {
     const inventoryView = document.getElementById("inventoryView");
     const logsView = document.getElementById("logsView");
     const btn = document.getElementById("viewToggleBtn");
 
     if (currentView === "inventory") {
-        // Switch to logs
+        
         inventoryView.style.display = "none";
         logsView.style.display = "block";
         btn.textContent = "Item List";
@@ -217,7 +212,7 @@ async function toggleView() {
         document.getElementById("searchInput").value = "";
         await renderLogs();
     } else {
-        // Switch back to inventory
+        
         logsView.style.display = "none";
         inventoryView.style.display = "block";
         btn.textContent = "Activity Log";
@@ -227,9 +222,8 @@ async function toggleView() {
     }
 }
 
-// ── Activity Log Render ───────────────────────────────────────────
 async function renderLogs(filterValue = "") {
-    // Only fetch fresh data from server when not filtering
+    
     if (!filterValue) {
         const res = await fetch(LOGS_URL);
         allLogs = await res.json();
@@ -270,7 +264,7 @@ function formatTimestamp(ts) {
         + " " + d.toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" });
 }
 
-// ── Search (works for both inventory and logs view) ───────────────
+
 function searchItem() {
     const value = document.getElementById("searchInput").value.toLowerCase().trim();
 
@@ -293,7 +287,6 @@ function resetSearch() {
     }
 }
 
-// ── Backdrop click to close modal ─────────────────────────────────
 function handleModalBackdropClick(event, modalId) {
     if (event.target.id === modalId) {
         document.getElementById(modalId).style.display = "none";
