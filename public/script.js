@@ -1,5 +1,5 @@
-const API_URL = "http://localhost:5000/api/items";
-const LOGS_URL = "http://localhost:5000/api/logs";
+const API_URL = "https://stock-management-1-vv3s.onrender.com/api/items";
+const LOGS_URL = "https://stock-management-1-vv3s.onrender.com/api/logs";
 
 let allItems = [];
 let allLogs = [];   // cached logs for client-side search
