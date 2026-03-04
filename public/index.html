@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Inventory Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <h2>Inventory</h2>
+            <button onclick="openAddModal()">Add Item</button>
+            <button onclick="toggleAlerts()">Alerts</button>
+
+            <!-- Alerts Panel -->
+            <div id="alertBox" class="alert-panel">
+                <div id="alertList" class="alert-list"></div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main">
+
+            <!-- Cards -->
+            <div class="cards">
+                <div class="card">
+                    <h3>Total Items</h3>
+                    <p id="totalItems">0</p>
+                </div>
+
+                <div class="card card-warning">
+                    <h3>Low Stock</h3>
+                    <p id="lowStock">0</p>
+                </div>
+
+                <div class="card card-danger">
+                    <h3>Out of Stock</h3>
+                    <p id="outStock">0</p>
+                </div>
+            </div>
+
+            <!-- Search bar + view toggle -->
+            <div class="search-bar">
+                <input id="searchInput" placeholder="Search by item name">
+                <button onclick="searchItem()">Search</button>
+                <button onclick="resetSearch()">Reset</button>
+                <button id="viewToggleBtn" class="btn-view-toggle" onclick="toggleView()">Activity Log</button>
+            </div>
+
+            <!-- Inventory View -->
+            <div id="inventoryView">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th>Stock</th>
+                            <th>Reorder</th>
+                            <th>Supplier</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="inventoryBody"></tbody>
+                </table>
+            </div>
+
+            <!-- Logs View -->
+            <div id="logsView" style="display:none;">
+                <div class="logs-section">
+                    <div class="logs-header">
+                        <h3>Activity Log</h3>
+                    </div>
+                    <div class="logs-table-wrap">
+                        <table class="logs-table">
+                            <thead>
+                                <tr>
+                                    <th>Tag</th>
+                                    <th>Item Name</th>
+                                    <th>Category</th>
+                                    <th>Supplier</th>
+                                    <th>Qty Changed</th>
+                                    <th>Reorder Changed</th>
+                                    <th>Description</th>
+                                    <th>Timestamp</th>
+                                </tr>
+                            </thead>
+                            <tbody id="logsBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Add Modal -->
+    <div id="addModal" class="modal" onclick="handleModalBackdropClick(event, 'addModal')">
+        <div class="modal-box">
+            <h3>Add New Item</h3>
+            <input id="addName" placeholder="Item Name">
+            <input id="addCategory" placeholder="Category">
+            <input id="addQuantity" type="number" placeholder="Quantity">
+            <input id="addReorder" type="number" placeholder="Reorder Level">
+            <input id="addSupplier" placeholder="Supplier">
+            <div class="modal-actions">
+                <button class="btn-primary" onclick="addItem()">Submit</button>
+                <button class="btn-secondary" onclick="closeAddModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Update Modal (slim — only Quantity & Reorder Level) -->
+    <div id="updateModal" class="modal" onclick="handleModalBackdropClick(event, 'updateModal')">
+        <div class="modal-box modal-box-slim">
+            <h3 id="updateModalTitle">Update Stock</h3>
+            <p class="modal-subtitle" id="updateModalSubtitle"></p>
+            <label class="field-label">New Quantity</label>
+            <input id="updateQuantity" type="number" placeholder="Enter new quantity">
+            <label class="field-label">Reorder Level</label>
+            <input id="updateReorder" type="number" placeholder="Enter reorder level">
+            <div class="modal-actions">
+                <button class="btn-primary" onclick="submitUpdate()">Save Changes</button>
+                <button class="btn-secondary" onclick="closeUpdateModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
